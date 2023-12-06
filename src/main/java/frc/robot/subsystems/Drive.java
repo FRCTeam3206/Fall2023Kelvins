@@ -40,8 +40,9 @@ public class Drive extends SubsystemBase {
     resetEncoders();
   }
 
+  /** All speed passed through the function is halved */
   public void arcadeDrive(double fwd, double rot) {
-    m_drive.arcadeDrive(fwd, rot);
+    m_drive.arcadeDrive(fwd * .5, rot * .5);
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
