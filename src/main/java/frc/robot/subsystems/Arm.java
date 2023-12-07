@@ -13,6 +13,6 @@ public class Arm extends SubsystemBase {
   }
 
   public void stopArm() {
-    armmoter.set(0);
+    armmoter.stopMotor();
   }
 }
