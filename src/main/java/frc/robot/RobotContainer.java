@@ -49,7 +49,7 @@ public class RobotContainer {
 
     m_driverController
         .povDown()
-        .whileTrue(new StartEndCommand(() -> m_arm.moveArm(0.2), () -> m_arm.stopArm(), m_arm));
+        .whileTrue(new StartEndCommand(() -> m_arm.moveArm(-0.2), () -> m_arm.stopArm(), m_arm));
 
     // Set drive default command
     m_robotDrive.setDefaultCommand(
