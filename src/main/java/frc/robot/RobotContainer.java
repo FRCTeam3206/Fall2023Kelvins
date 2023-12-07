@@ -8,6 +8,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
@@ -42,9 +43,13 @@ public class RobotContainer {
         .debounce(0.1)
         .onTrue(new InstantCommand(() -> m_robotDrive.resetEncoders(), m_robotDrive));
 
-    m_driverController.povUp().onTrue(new InstantCommand(() -> m_arm.moveArm(0.3), m_arm));
+    m_driverController
+        .povUp()
+        .whileTrue(new StartEndCommand(() -> m_arm.moveArm(0.2), () -> m_arm.stopArm(), m_arm));
 
-    m_driverController.povDown().onTrue(new InstantCommand(() -> m_arm.moveArm(-0.3), m_arm));
+    m_driverController
+        .povDown()
+        .whileTrue(new StartEndCommand(() -> m_arm.moveArm(0.2), () -> m_arm.stopArm(), m_arm));
 
     // Set drive default command
     m_robotDrive.setDefaultCommand(

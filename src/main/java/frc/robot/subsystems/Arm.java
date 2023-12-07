@@ -11,4 +11,8 @@ public class Arm extends SubsystemBase {
   public void moveArm(double speed) {
     armmoter.set(speed);
   }
+
+  public void stopArm() {
+    armmoter.set(0);
+  }
 }
