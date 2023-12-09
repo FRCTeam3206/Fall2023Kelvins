@@ -5,15 +5,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Arm;
 
 /** An example command that uses an example subsystem. */
-public class DriveTimed extends CommandBase {
+public class DumpArm extends CommandBase {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final double m_duration;
-
   private final double m_speed;
-  private final Drive m_drive;
+
+  private final Arm m_arm;
   private long m_startTime;
 
   /**
@@ -24,24 +24,23 @@ public class DriveTimed extends CommandBase {
    * @param time  How much time to drive in seconds
    * @param drive The drivetrain subsystem on which this command will run
    */
-  public DriveTimed(double speed, double time, Drive drive) {
-    m_speed = speed;
-    m_duration = time * 1000;
-    m_drive = drive;
-    addRequirements(drive);
+  public DumpArm(Arm arm) {
+    m_speed = -0.25;
+    m_duration = 250;
+    m_arm = arm;
+    addRequirements(arm);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     m_startTime = System.currentTimeMillis();
-    m_drive.arcadeDrive(0, 0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drive.arcadeDrive(m_speed, 0);
+    m_arm.moveArm(m_speed);
     // m_arm.armmoter();
 
   }
@@ -49,7 +48,7 @@ public class DriveTimed extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_drive.arcadeDrive(0, 0);
+    m_arm.stopArm();
   }
 
   // Returns true when the command should end.

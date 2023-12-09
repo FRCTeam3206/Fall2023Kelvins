@@ -16,10 +16,8 @@ import java.util.function.DoubleSupplier;
 
 public class Drive extends SubsystemBase {
   // Initialize the motors and drivetrain
-  private final CANSparkMax m_leftDrive =
-      new CANSparkMax(DriveConstants.kLeftDriveCanId, MotorType.kBrushless);
-  private final CANSparkMax m_rightDrive =
-      new CANSparkMax(DriveConstants.kRightDriveCanId, MotorType.kBrushless);
+  private final CANSparkMax m_leftDrive = new CANSparkMax(DriveConstants.kLeftDriveCanId, MotorType.kBrushless);
+  private final CANSparkMax m_rightDrive = new CANSparkMax(DriveConstants.kRightDriveCanId, MotorType.kBrushless);
 
   private final DifferentialDrive m_drive = new DifferentialDrive(m_leftDrive, m_rightDrive);
 

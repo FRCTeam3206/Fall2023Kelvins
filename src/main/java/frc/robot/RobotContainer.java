@@ -16,76 +16,82 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drive;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final Drive m_robotDrive = new Drive();
-  private final Arm m_arm = new Arm();
+    // The robot's subsystems and commands are defined here...
+    private final Drive m_robotDrive = new Drive();
+    private final Arm m_arm = new Arm();
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+    // Replace with CommandPS4Controller or CommandJoystick if needed
+    private final CommandXboxController m_driverController = new CommandXboxController(
+            OperatorConstants.kDriverControllerPort);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-    // Configure the trigger bindings
-    configureBindings();
-  }
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
+    public RobotContainer() {
+        // Configure the trigger bindings
+        configureBindings();
+    }
 
-  private void configureBindings() {
-    // Reset the encoders when the "a" button is pressed
-    m_driverController
-        .a()
-        .debounce(0.1)
-        .onTrue(new InstantCommand(() -> m_robotDrive.resetEncoders(), m_robotDrive));
+    private void configureBindings() {
+        // Reset the encoders when the "a" button is pressed
+        m_driverController
+                .a()
+                .debounce(0.1)
+                .onTrue(new InstantCommand(() -> m_robotDrive.resetEncoders(), m_robotDrive));
 
-    m_driverController
-        .povUp()
-        .whileTrue(new StartEndCommand(() -> m_arm.moveArm(0.2), () -> m_arm.stopArm(), m_arm));
+        m_driverController
+                .povUp()
+                .whileTrue(new StartEndCommand(() -> m_arm.moveArm(0.2), () -> m_arm.stopArm(), m_arm));
 
-    m_driverController
-        .povDown()
-        .whileTrue(new StartEndCommand(() -> m_arm.moveArm(-0.2), () -> m_arm.stopArm(), m_arm));
+        m_driverController
+                .povDown()
+                .whileTrue(new StartEndCommand(() -> m_arm.moveArm(-0.2), () -> m_arm.stopArm(), m_arm));
 
-    // Set drive default command
-    m_robotDrive.setDefaultCommand(
-        new RunCommand(
-            () ->
-                m_robotDrive.arcadeDrive(
-                    -MathUtil.applyDeadband(
-                        m_driverController.getLeftY(), OperatorConstants.kDriveDeadband),
-                    -MathUtil.applyDeadband(
-                        m_driverController.getRightX(), OperatorConstants.kDriveDeadband)),
-            m_robotDrive));
+        // Set drive default command
+        m_robotDrive.setDefaultCommand(
+                new RunCommand(
+                        () -> m_robotDrive.arcadeDrive(
+                                -MathUtil.applyDeadband(
+                                        m_driverController.getLeftY(), OperatorConstants.kDriveDeadband),
+                                -MathUtil.applyDeadband(
+                                        m_driverController.getRightX(), OperatorConstants.kDriveDeadband)),
+                        m_robotDrive));
 
-    /*
-      // alternative version of setting the default command that uses the Drive.arcadeDriveCommand()
-      m_robotDrive.setDefaultCommand(
-          m_robotDrive.arcadeDriveCommand(
-              () ->
-                  -MathUtil.applyDeadband(
-                      m_driverController.getLeftY(), OperatorConstants.kDriveDeadband),
-              () ->
-                  -MathUtil.applyDeadband(
-                      m_driverController.getRightX(), OperatorConstants.kDriveDeadband)));
-    */
-  }
+        /*
+         * // alternative version of setting the default command that uses the
+         * Drive.arcadeDriveCommand()
+         * m_robotDrive.setDefaultCommand(
+         * m_robotDrive.arcadeDriveCommand(
+         * () ->
+         * -MathUtil.applyDeadband(
+         * m_driverController.getLeftY(), OperatorConstants.kDriveDeadband),
+         * () ->
+         * -MathUtil.applyDeadband(
+         * m_driverController.getRightX(), OperatorConstants.kDriveDeadband)));
+         */
+    }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return Autos.simpleAuto(m_robotDrive);
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
+        // An example command will be run in autonomous
+        return Autos.simpleAuto(m_robotDrive, m_arm);
 
-    // Alternative version of simpleAuto that used chained commands
-    // return m_robotDrive.driveTimedCommand(0.5, 2).andThen(m_robotDrive.driveTimedCommand(-0.5,
-    // 1));
-  }
+        // Alternative version of simpleAuto that used chained commands
+        // return m_robotDrive.driveTimedCommand(0.5,
+        // 2).andThen(m_robotDrive.driveTimedCommand(-0.5,
+        // 1));
+    }
 }
